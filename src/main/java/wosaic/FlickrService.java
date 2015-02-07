@@ -27,6 +27,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONException;
+import to.sparks.wosaic.AppProperties;
 
 //import com.aetrion.flickr.Flickr;
 //import com.aetrion.flickr.FlickrException;
@@ -150,20 +151,10 @@ public class FlickrService extends SourcePlugin {
      */
     private static REST Rest = null;
 
-    private static Properties properties = null;
-
     /**
      * Static constructor-- initialize our Flickr API and connection to Flickr
      */
     static {
-        InputStream stream = ClassLoader.getSystemResourceAsStream("wosaic.properties");
-        properties = new Properties();
-        try {
-            properties.load(stream);
-        } catch (IOException ex) {
-            Logger.getLogger(FlickrService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
         // Connect to flickr
         try {
             FlickrService.Connect();
@@ -174,25 +165,18 @@ public class FlickrService extends SourcePlugin {
 
     private static void Connect() throws ParserConfigurationException {
 
-		// Try to connect at most 'CONNECT_RETRY' times before throwing
+	// Try to connect at most 'CONNECT_RETRY' times before throwing
         // an exception
         int tryNum = 0;
         while (!FlickrService.Connected) {
             try {
                 // Initialize
                 FlickrService.Rest = new REST();
-//				FlickrService.Rest.setHost(FlickrService.HOST);
-                FlickrService.Flickr = new Flickr(properties.getProperty("flickr.apikey"), properties.getProperty("flickr.secret"));
-
-				// Set the shared secret which is used for any calls which
-                // require
-                // signing.
+                FlickrService.Flickr = new Flickr(AppProperties.getFlickrApiKey(), AppProperties.getFlickrSecret());
                 FlickrService.ReqCon = RequestContext.getRequestContext();
-//				FlickrService.ReqCon.setSharedSecret(FlickrService.SECRET);
 
                 // Get our picture service
-                FlickrService.PhotosInt = FlickrService.Flickr
-                        .getPhotosInterface();
+                FlickrService.PhotosInt = FlickrService.Flickr.getPhotosInterface();
                 FlickrService.Connected = true;
 
             } catch (final ParserConfigurationException ex) {

@@ -20,6 +20,7 @@ import wosaic.Sources;
 import com.facebook.api.FacebookXmlRestClient;
 
 import edu.stanford.ejalbert.BrowserLauncher;
+import to.sparks.wosaic.AppProperties;
 
 /**
  * Utility for interfacing with Facebook
@@ -53,13 +54,9 @@ public class Facebook extends SourcePlugin {
 
 	}
 
-	private static String API_KEY = "70d85deaa9e38c122cd17bab74ce80a8";
-
 	private static String LOGIN_URL = "http://www.facebook.com/login.php";
 
 	private static int NUM_QUERIES = 50;
-
-	private static String SECRET = "dc48f9f413d3dc738a4536402e2a75b1";
 
 	private static int SMALL_SRC = 5;
 
@@ -89,7 +86,7 @@ public class Facebook extends SourcePlugin {
 	 * possible to put this object in a usable state.
 	 */
 	public Facebook() {
-		client = new FacebookXmlRestClient(Facebook.API_KEY, Facebook.SECRET);
+		client = new FacebookXmlRestClient(AppProperties.getFacebookApiKey(), AppProperties.getFacebookSecret());
 		client.setIsDesktop(true);
 		isAuthenticated = false;
 		numResults = Facebook.NUM_QUERIES;
@@ -111,7 +108,7 @@ public class Facebook extends SourcePlugin {
 		// The following functions can generate exceptions
 		final BrowserLauncher browserLauncher = new BrowserLauncher(null);
 		browserLauncher.openURLinBrowser(Facebook.LOGIN_URL + "?api_key="
-				+ Facebook.API_KEY + "&auth_token=" + auth);
+				+ AppProperties.getFacebookApiKey() + "&auth_token=" + auth);
 	}
 
 	/**

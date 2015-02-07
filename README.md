@@ -9,4 +9,5 @@ This file should contain your Flickr keys.  e.g.,
     
     flickr.apikey=(your key goes here)
     flickr.secret=(your app secret goes here)
+    facebook.apikey=(etc..)
 
